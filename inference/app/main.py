@@ -25,11 +25,13 @@ class InvoiceRequest(BaseModel):
     
 @app.post("/api/v1/invoice_inference")
 def invoice_inference(req: InvoiceRequest):
+    print("OCR start")
     text = ocr.run_ocr(pdf_base64=req.pdf64)
-    print(text)
+    print("OCR end")
     promter = Prompter(req.response_schema, text)
     messages = promter.messages
     
+    print("VLLM API start")
     completion = client.chat.completions.create(
         model=MODEL_NAME,
         messages=messages,
@@ -37,6 +39,7 @@ def invoice_inference(req: InvoiceRequest):
         max_tokens=750,
         top_p=0.9
     )
+    print("VLLM API end")
 
     result = completion.choices[0].message.content
     

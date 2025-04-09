@@ -4,13 +4,13 @@ import os
 class Prompter:
     def __init__(self, response_schema, invoice_text):
         self.messages = []
-        self.add_message("system", self.system_message(response_schema))
-        self.add_message("user", self.user_message(invoice_text))
+        self.add_message("system", self._build_system_message(response_schema))
+        self.add_message("user", self._build_user_message(invoice_text))
     
     def add_message(self, role, content):
         self.messages.append({"role": role, "content": content})
-        
-    def system_message(self, response_schema):
+
+    def _build_system_message(self, response_schema):
         if response_schema == "" or response_schema == "Stringify JSON schema":
             schema_path = os.path.join(os.path.dirname(__file__), "schemas", "response_schema.json")
             with open(schema_path, "r") as schema_file:
@@ -19,23 +19,30 @@ class Prompter:
             response_schema = json.loads(response_schema.strip())
 
         return (
-            "You are a highly accurate information extraction AI specialized in parsing invoices. "
-            "Your task is to extract specific fields from raw invoice markdown and respond strictly in JSON format."
-            "The valid JSON output **must** conform exactly to the JSON schema below:\n"
-            f"{response_schema}\n"
-            "Only include fields that are clearly present in the input markdown. If a value is missing or unclear, use `null`for value."
+            "You are an advanced information extraction AI. Your role is to extract structured data "
+            "from raw invoice documents formatted in markdown. Your output must be a single JSON object "
+            "that conforms **exactly** to the provided JSON Schema.\n\n"
+            "The schema is as follows:\n"
+            f"{json.dumps(response_schema, indent=2)}\n\n"
+            "Guidelines:\n"
+            "- Only extract fields that are explicitly present and unambiguous in the invoice markdown.\n"
+            "- If a value is missing, unclear, or not present, use `null`.\n"
+            "- Do not infer or guess missing values under any circumstances.\n"
+            "- Ensure the JSON output is syntactically valid and parseable.\n"
+            "- Dates must be formatted as `YYYY-MM-DD`.\n"
+            "- Your response must contain **only** the JSON object—no additional explanations, comments, or text."
         )
-               
-    def user_message(self, invoice_text):
+
+    def _build_user_message(self, invoice_text):
         return (
-            "Here is the invoice markdown:\n"
+            "Below is the invoice in markdown format:\n\n"
             f"{invoice_text}\n\n"
             "Instructions:\n"
-            "- Do not include any explanatory text, headers, or notes in your response.\n"
-            "- Return a single, valid JSON object strictly adhering to the schema provided.\n"
-            "- For any field not present or uncertain in the invoice, assign its value as `null`.\n"
-            "- Do not infer or hallucinate any values.\n"
-            "- Always for any Date fields, use the format YYYY-MM-DD.\n"
-            "- Do not omit any fields, do not try to brief the output"
-            "- Json output must be a valid parseable string, do not add any other text or explanation.\n"
+            "- Extract the data as per the schema provided above.\n"
+            "- Return only a valid JSON object as your output.\n"
+            "- All fields defined in the schema must be included in the output.\n"
+            "- Use `null` for any field that cannot be determined from the input.\n"
+            "- Do not include any extra text or commentary.\n"
+            "- Ensure all Date fields use the format `YYYY-MM-DD`.\n"
+            "- The response must be a single valid JSON object and nothing else."
         )

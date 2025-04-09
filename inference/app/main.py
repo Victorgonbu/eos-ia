@@ -31,7 +31,7 @@ def invoice_inference(req: InvoiceRequest):
     completion = client.chat.completions.create(
         model=MODEL_NAME,
         messages=messages,
-        temperature=0.5,
+        temperature=0.6,
         max_tokens=750,
         top_p=0.9
     )
@@ -41,6 +41,7 @@ def invoice_inference(req: InvoiceRequest):
     try:
         response = json.loads(result.strip())
     except json.JSONDecodeError:
+        print(result)
         response = { "message": "Invalid JSON response from VLLM API" }
         
     return response

@@ -9,9 +9,6 @@ services:
       --model Qwen/Qwen2.5-1.5B-Instruct 
       --dtype float16
       --gpu-memory-utilization 0.8
-      --temperature 0.2
-      --top_p 0.9
-      --max_tokens 750
       --port 8000
     deploy:
       resources:

@@ -29,8 +29,11 @@ def invoice_inference(req: InvoiceRequest):
     messages = promter.messages
     
     completion = client.chat.completions.create(
-    model=MODEL_NAME,
-    messages=messages
+        model=MODEL_NAME,
+        messages=messages,
+        temperature=0.5,
+        max_tokens=750,
+        top_p=0.9
     )
 
     result = completion.choices[0].message.content

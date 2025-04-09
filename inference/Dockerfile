@@ -1,4 +1,4 @@
-FROM shaqri/paddleocrgpu:latest
+FROM shaqri/eos-ia:latest
 
 RUN apt-get update && apt-get install -y \
     wget \

@@ -6,3 +6,5 @@ ipdb
 pdf2image
 numpy
 setuptools
+docling
+json_repair

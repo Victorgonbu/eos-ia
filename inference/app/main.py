@@ -6,6 +6,7 @@ from paddle_ocr import PaddleOcr
 from prompter import Prompter
 from openai import OpenAI
 import json
+import json_repair
 
 VLLM_API_URL = os.getenv("VLLM_API_URL", "http://localhost:8000/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-1.5B-Instruct")
@@ -25,6 +26,7 @@ class InvoiceRequest(BaseModel):
 @app.post("/api/v1/invoice_inference")
 def invoice_inference(req: InvoiceRequest):
     text = ocr.run_ocr(pdf_base64=req.pdf64)
+    print(text)
     promter = Prompter(req.response_schema, text)
     messages = promter.messages
     
@@ -39,7 +41,7 @@ def invoice_inference(req: InvoiceRequest):
     result = completion.choices[0].message.content
     
     try:
-        response = json.loads(result.strip())
+        response = json_repair.loads(result.strip())
     except json.JSONDecodeError:
         print(result)
         response = { "message": "Invalid JSON response from VLLM API" }

@@ -20,15 +20,15 @@ class Prompter:
 
         return (
             "You are a highly accurate information extraction AI specialized in parsing invoices. "
-            "Your task is to extract specific fields from raw invoice text and respond strictly in JSON format. "
+            "Your task is to extract specific fields from raw invoice markdown and respond strictly in JSON format."
             "The valid JSON output **must** conform exactly to the JSON schema below:\n"
             f"{response_schema}\n"
-            "Only include fields that are clearly present in the input text. If a value is missing or unclear, use `null`for value."
+            "Only include fields that are clearly present in the input markdown. If a value is missing or unclear, use `null`for value."
         )
                
     def user_message(self, invoice_text):
         return (
-            "Here is the raw invoice text:\n"
+            "Here is the invoice markdown:\n"
             f"{invoice_text}\n\n"
             "Instructions:\n"
             "- Do not include any explanatory text, headers, or notes in your response.\n"
@@ -37,4 +37,5 @@ class Prompter:
             "- Do not infer or hallucinate any values.\n"
             "- Always for any Date fields, use the format YYYY-MM-DD.\n"
             "- Do not omit any fields, do not try to brief the output"
+            "- Json output must be a valid parseable string, do not add any other text or explanation.\n"
         )

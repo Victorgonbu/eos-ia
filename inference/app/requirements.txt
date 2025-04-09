@@ -1,0 +1,8 @@
+uv
+openai
+uvicorn
+fastapi
+ipdb
+pdf2image
+numpy
+setuptools

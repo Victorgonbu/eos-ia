@@ -1,0 +1,63 @@
+{
+    "type": "object",
+    "properties": {
+        "InvoiceNumber": {
+            "type": "string"
+        },
+        "Date": {
+            "type": "string",
+            "format": "date"
+        },
+        "DueDate": {
+            "type": "string",
+            "format": "date"
+        },
+        "PaymentTerms": {
+            "type": "string"
+        },
+        "SupplierName": {
+            "type": "string"
+        },
+        "BuyerName": {
+            "type": "string"
+        },
+        "DiscountTotal": {
+            "type": "number"
+        },
+        "BanlanceInFavor": {
+            "type": "number"
+        },
+        "CurrencyCode": {
+            "type": "string"
+        },
+        "TotalGrossAmount": {
+            "type": "number"
+        },
+        "LineItems": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "Description": {
+                        "type": "string"
+                    },
+                    "Quantity": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "TotalAmount": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "UnitCode": {
+                        "type": "string"
+                    },
+                    "UnitPrice": {
+                        "type": "number",
+                        "format": "float"
+                    }
+                }
+            }
+        }
+    }
+}

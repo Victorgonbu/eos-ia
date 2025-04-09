@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    ports:
+      - "8000:8000"
+    command: >
+      --model Qwen/Qwen2.5-1.5B-Instruct 
+      --dtype auto
+      --gpu-memory-utilization 0.8
+      --port 8000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  fastapi:
+    build: ./inference
+    ports:
+      - "8001:8001"
+    depends_on:
+      - vllm
+    environment:
+      VLLM_API_URL: http://vllm:8000/v1
+      MODEL_NAME: Qwen/Qwen2.5-1.5B-Instruct
+      OPENAI_API_KEY: token-what-a-day
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]

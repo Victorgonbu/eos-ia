@@ -9,7 +9,7 @@ import json
 import json_repair
 
 VLLM_API_URL = os.getenv("VLLM_API_URL", "http://localhost:8000/v1")
-MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-1.5B-Instruct")
+MODEL_NAME = os.getenv("MODEL_NAME", "mistralai/Mistral-7B-Instruct-v0.3")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "token-what-a-day")
 
 app = FastAPI()

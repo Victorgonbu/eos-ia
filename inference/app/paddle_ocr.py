@@ -33,4 +33,4 @@ class PaddleOcr:
             for line in results[0]:
                 all_text.append(line[1][0])  # Extract text only
 
-        return " ".join(all_text)
+        return "\n ".join(all_text)

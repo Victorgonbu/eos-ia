@@ -9,3 +9,4 @@ numpy
 setuptools
 docling
 json_repair
+ollama

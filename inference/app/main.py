@@ -7,6 +7,7 @@ from prompter import Prompter
 from openai import OpenAI
 import json
 import json_repair
+from ollama import Client
 
 VLLM_API_URL = os.getenv("VLLM_API_URL", "http://localhost:8000/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "mistralai/Mistral-7B-Instruct-v0.3")
@@ -14,7 +15,11 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "token-what-a-day")
 
 app = FastAPI()
 ocr = PaddleOcr()
-client = OpenAI(base_url=VLLM_API_URL, api_key=OPENAI_API_KEY)
+# client = OpenAI(base_url=VLLM_API_URL, api_key=OPENAI_API_KEY)
+client = Client(
+  host=VLLM_API_URL,
+  headers={'x-some-header': 'some-value'}
+)
 
 class PromptRequest(BaseModel):
     prompt: str
@@ -31,17 +36,9 @@ def invoice_inference(req: InvoiceRequest):
     promter = Prompter(req.response_schema, text)
     messages = promter.messages
     
-    print("VLLM API start")
-    completion = client.chat.completions.create(
-        model=MODEL_NAME,
-        messages=messages,
-        temperature=0.6,
-        max_tokens=750,
-        top_p=0.9
-    )
-    print("VLLM API end")
+    response = client.chat(model=MODEL_NAME, messages=messages)
 
-    result = completion.choices[0].message.content
+    result = response["message"]["content"]
     
     try:
         response = json_repair.loads(result.strip())
@@ -53,14 +50,11 @@ def invoice_inference(req: InvoiceRequest):
 
 @app.post("/generate/")
 async def generate_text(req: PromptRequest):
-    payload = {
-        "model": MODEL_NAME,
-        "messages": [
-            {"role": "user", "content": req.prompt}
-        ],
-        "temperature": 0.5
-    }
-
-    async with httpx.AsyncClient() as client:
-        response = await client.post(f"{VLLM_API_URL}/chat/completions", json=payload)
-        return response.json()
+    response = client.chat(model=MODEL_NAME, messages=[
+        {
+            'role': 'user',
+            'content': 'Why is the sky blue?',
+        },
+    ])
+    
+    return response

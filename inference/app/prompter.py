@@ -20,22 +20,21 @@ class Prompter:
 
         return (
             "You are an advanced information extraction AI. Your role is to extract structured data "
-            "from raw invoice documents formatted in markdown. Your output must be a single JSON object "
+            "from raw invoice documents formatted as text. Your output must be a single JSON object "
             "that conforms **exactly** to the provided JSON Schema.\n\n"
             "The schema is as follows:\n"
             f"{json.dumps(response_schema, indent=2)}\n\n"
             "Guidelines:\n"
-            "- Only extract fields that are explicitly present and unambiguous in the invoice markdown.\n"
+            "- Only extract fields that are explicitly present and unambiguous in the invoice text.\n"
             "- If a value is missing, unclear, or not present, use `null`.\n"
             "- Do not infer or guess missing values under any circumstances.\n"
-            "- Ensure the JSON output is syntactically valid and parseable.\n"
             "- Dates must be formatted as `YYYY-MM-DD`.\n"
             "- Your response must contain **only** the JSON object—no additional explanations, comments, or text."
         )
 
     def _build_user_message(self, invoice_text):
         return (
-            "Below is the invoice in markdown format:\n\n"
+            "Below is the invoice in text format:\n\n"
             f"{invoice_text}\n\n"
             "Instructions:\n"
             "- Extract the data as per the schema provided above.\n"
@@ -44,5 +43,4 @@ class Prompter:
             "- Use `null` for any field that cannot be determined from the input.\n"
             "- Do not include any extra text or commentary.\n"
             "- Ensure all Date fields use the format `YYYY-MM-DD`.\n"
-            "- The response must be a single valid JSON object and nothing else."
         )

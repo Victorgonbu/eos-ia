@@ -2,15 +2,22 @@ version: '3.8'
 
 services:
   vllm:
-    image: vllm/vllm-openai:latest
+    image: ollama/ollama
     ports:
-      - "8000:8000"
-    command: >
-      --model mistralai/Mistral-7B-Instruct-v0.3
-      --dtype float16
-      --gpu-memory-utilization 0.85
-      --env "HUGGING_FACE_HUB_TOKEN=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"
-      --port 8000
+      - "11434:11434"
+    environment:
+      OLLAMA_HOST: 0.0.0.0
+    volumes:
+      - ollama_data:/root/.ollama
+    entrypoint: >
+      bash -c "
+        ollama serve &
+        echo 'Waiting for Ollama server...'
+        sleep 6
+        ollama pull mistral:7b
+
+        wait
+      "
     deploy:
       resources:
         reservations:
@@ -24,11 +31,14 @@ services:
     depends_on:
       - vllm
     environment:
-      VLLM_API_URL: http://vllm:8000/v1
-      MODEL_NAME: mistralai/Mistral-7B-Instruct-v0.3
+      VLLM_API_URL: http://vllm:11434
+      MODEL_NAME: mistral:7b
       OPENAI_API_KEY: token-what-a-day
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [gpu]
+
+volumes:
+  ollama_data:  # Define the volume here

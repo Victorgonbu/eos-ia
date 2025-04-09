@@ -3,6 +3,7 @@ openai
 uvicorn
 fastapi
 ipdb
+paddleocr
 pdf2image
 numpy
 setuptools

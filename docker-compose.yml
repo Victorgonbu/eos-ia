@@ -8,7 +8,8 @@ services:
     command: >
       --model mistralai/Mistral-7B-Instruct-v0.3
       --dtype float16
-      --gpu-memory-utilization 0.80
+      --gpu-memory-utilization 0.85
+      --env "HUGGING_FACE_HUB_TOKEN=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"
       --port 8000
     deploy:
       resources:

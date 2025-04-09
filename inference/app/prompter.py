@@ -36,5 +36,5 @@ class Prompter:
             "- For any field not present or uncertain in the invoice, assign its value as `null`.\n"
             "- Do not infer or hallucinate any values.\n"
             "- Always for any Date fields, use the format YYYY-MM-DD.\n"
-            "- Respond ONLY with a valid JSON object."
+            "- Do not omit any fields, do not try to brief the output"
         )

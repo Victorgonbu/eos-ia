@@ -5,11 +5,12 @@ services:
     image: vllm/vllm-openai:latest
     ports:
       - "8000:8000"
+    environment:
+      HUGGING_FACE_HUB_TOKEN: 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
     command: >
       --model mistralai/Mistral-7B-Instruct-v0.3
-      --dtype float16
-      --gpu-memory-utilization 0.85
-      --env "HUGGING_FACE_HUB_TOKEN=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"
+      --dtype auto
+      --gpu-memory-utilization 0.90
       --port 8000
     deploy:
       resources:

@@ -1,84 +1,79 @@
 {
-    "type": "object",
-    "required": [
-      "InvoiceNumber", "Date", "DueDate", "PaymentTerms",
-      "SupplierName", "BuyerName", "DiscountTotal", "ChangesTotal",
-      "CurrencyCode", "TotalGrossAmount", "LineItems"
-    ],
-    "properties": {
+  "type": "object",
+  "properties": {
       "InvoiceNumber": {
-        "type": ["string", "null"],
-        "description": "The unique identifier for the invoice."
+          "type": "string",
+          "description": "The unique identifier for the invoice."
       },
       "Date": {
-        "type": ["string", "null"],
-        "format": "date",
-        "description": "The date when the invoice was issued (YYYY-MM-DD)."
+          "type": "string",
+          "format": "date",
+          "description": "The date when the invoice was issued."
       },
       "DueDate": {
-        "type": ["string", "null"],
-        "format": "date",
-        "description": "The payment due date (YYYY-MM-DD)."
+          "type": "string",
+          "format": "date",
+          "description": "The date by which the payment is due."
       },
       "PaymentTerms": {
-        "type": ["string", "null"],
-        "description": "Payment terms between supplier and buyer."
+          "type": "string",
+          "description": "The terms of payment agreed upon between the supplier and buyer."
       },
       "SupplierName": {
-        "type": ["string", "null"],
-        "description": "Name of the supplier issuing the invoice."
+          "type": "string",
+          "description": "The name of the supplier issuing the invoice."
       },
       "BuyerName": {
-        "type": ["string", "null"],
-        "description": "Name of the buyer receiving the invoice."
+          "type": "string",
+          "description": "The name of the buyer receiving the invoice."
       },
       "DiscountTotal": {
-        "type": ["number", "null"],
-        "description": "Total discount applied to the invoice."
+          "type": "number",
+          "description": "The total discount applied to the invoice."
       },
       "ChangesTotal": {
-        "type": ["number", "null"],
-        "description": "Additional charges applied to the invoice."
+          "type": "number",
+          "description": "The total additional charges applied to the invoice."
       },
       "CurrencyCode": {
-        "type": ["string", "null"],
-        "description": "Currency code used (e.g., USD, EUR)."
+          "type": "string",
+          "description": "The currency code used in the invoice (e.g., USD, EUR)."
       },
       "TotalGrossAmount": {
-        "type": ["number", "null"],
-        "description": "Total gross amount including taxes and discounts."
+          "type": "number",
+          "description": "The total gross amount of the invoice, including taxes and discounts."
       },
       "LineItems": {
-        "type": "array",
-        "minItems": 0,
-        "description": "List of line items in the invoice.",
-        "items": {
-          "type": "object",
-          "required": ["Description", "Quantity", "TotalAmount", "UnitCode", "UnitPrice"],
-          "properties": {
-            "Description": {
-              "type": ["string", "null"],
-              "description": "Description of the item or service."
-            },
-            "Quantity": {
-              "type": ["number", "null"],
-              "description": "Quantity of the item or service."
-            },
-            "TotalAmount": {
-              "type": ["number", "null"],
-              "description": "Total amount for the line item."
-            },
-            "UnitCode": {
-              "type": ["string", "null"],
-              "description": "Unit of measurement (e.g., kg, pcs)."
-            },
-            "UnitPrice": {
-              "type": ["number", "null"],
-              "description": "Price per unit."
-            }
+          "type": "array",
+          "description": "A list of line items included in the invoice.",
+          "items": {
+              "type": "object",
+              "properties": {
+                  "Description": {
+                      "type": "string",
+                      "description": "A description of the item or service."
+                  },
+                  "Quantity": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "The quantity of the item or service."
+                  },
+                  "TotalAmount": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "The total amount for the line item."
+                  },
+                  "UnitCode": {
+                      "type": "string",
+                      "description": "The unit of measurement for the item (e.g., kg, pcs)."
+                  },
+                  "UnitPrice": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "The price per unit of the item."
+                  }
+              }
           }
-        }
       }
-    }
   }
-  
+}

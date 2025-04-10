@@ -1,5 +1,6 @@
 import json
 import os
+import unicodedata
 
 class Prompter:
     def __init__(self, response_schema, invoice_text):
@@ -19,28 +20,28 @@ class Prompter:
             response_schema = json.loads(response_schema.strip())
 
         return (
-            "You are an advanced information extraction AI. Your role is to extract structured data "
-            "from raw invoice documents formatted as text. Your output must be a single JSON object "
-            "that conforms **exactly** to the provided JSON Schema.\n\n"
-            "The schema is as follows:\n"
-            f"{json.dumps(response_schema, indent=2)}\n\n"
-            "Guidelines:\n"
-            "- Only extract fields that are explicitly present and unambiguous in the invoice text.\n"
-            "- If a value is missing, unclear, or not present, use `null`.\n"
-            "- Do not infer or guess missing values under any circumstances.\n"
-            "- Dates must be formatted as `YYYY-MM-DD`.\n"
-            "- Your response must contain **only** the JSON object—no additional explanations, comments, or text."
+            "You are a specialized information extraction system designed to convert raw invoice text into a structured JSON object.\n\n"
+            "Your task is to extract only the information that is **explicitly present** in the input. Do not infer or guess missing data.\n\n"
+            "**Output Requirements:**\n"
+            "1. Return **only** the extracted data as a JSON object, formatted to exactly match the schema below.\n"
+            "2. Include **all** fields defined in the schema, using `null` for missing or ambiguous values.\n"
+            "3. Dates must use the format `YYYY-MM-DD`.\n"
+            "4. Do **not** include any extra commentary, explanation, or notes—just the JSON.\n\n"
+            "**Target Schema:**\n"
+            f"{json.dumps(response_schema, indent=2)}"
         )
 
     def _build_user_message(self, invoice_text):
+        cleaned_text = "\n".join(line.strip() for line in invoice_text.splitlines() if line.strip())
+        cleaned_text = unicodedata.normalize("NFKC", cleaned_text)
+        
         return (
-            "Below is the invoice in text format:\n\n"
-            f"{invoice_text}\n\n"
-            "Instructions:\n"
-            "- Extract the data as per the schema provided above.\n"
-            "- Return only a valid JSON object as your output.\n"
-            "- All fields defined in the schema must be included in the output.\n"
-            "- Use `null` for any field that cannot be determined from the input.\n"
-            "- Do not include any extra text or commentary.\n"
-            "- Ensure all Date fields use the format `YYYY-MM-DD`.\n"
+            "Below is the raw invoice text:\n\n"
+            f"{cleaned_text}\n\n"
+            "**Extraction Instructions:**\n"
+            "1. Analyze the invoice content carefully.\n"
+            "2. Extract and return a valid JSON object according to the schema provided by the system.\n"
+            "3. All required fields must be present. Use `null` for fields not found or unclear.\n"
+            "4. Ensure proper formatting of numbers and dates (YYYY-MM-DD).\n"
+            "5. Your output must be a single, valid JSON object. **No explanations or extra text.**"
         )

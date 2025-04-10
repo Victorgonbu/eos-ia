@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import httpx
 import os
 from paddle_ocr import PaddleOcr
 from prompter import Prompter
@@ -15,7 +14,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "token-what-a-day")
 
 app = FastAPI()
 ocr = PaddleOcr()
-# client = OpenAI(base_url=VLLM_API_URL, api_key=OPENAI_API_KEY)
+
 client = Client(
   host=VLLM_API_URL,
   headers={'x-some-header': 'some-value'}
@@ -57,4 +56,4 @@ async def generate_text(req: PromptRequest):
         },
     ])
     
-    return response
+    return { "message": response["message"]["content"] }

@@ -4,20 +4,27 @@ import os
 class Prompter:
     def __init__(self, response_schema, invoice_text):
         self.messages = []
-        self.add_message("system", self._build_system_message(response_schema))
-        self.add_message("user", self._build_user_message(invoice_text))
+        # self.add_message("system", self._build_system_message(response_schema))
+        self.add_message("user", self._build_user_message(response_schema, invoice_text))
     
     def add_message(self, role, content):
         self.messages.append({"role": role, "content": content})
 
-    def _build_system_message(self, response_schema):
+    # def _build_system_message(self, response_schema):
+    #     pass
+
+    #     # return (
+           
+    #     # )
+
+    def _build_user_message(self, invoice_text):
         if response_schema == "" or response_schema == "Stringify JSON schema":
             schema_path = os.path.join(os.path.dirname(__file__), "schemas", "response_schema.json")
             with open(schema_path, "r") as schema_file:
                 response_schema = json.load(schema_file)
         else:
             response_schema = json.loads(response_schema.strip())
-
+    
         return (
             "You are a highly advanced AI model specialized in extracting structured data from unstructured text. "
             "Your task is to extract information from raw invoice text and return a single JSON object that strictly adheres to the provided JSON schema.\n\n"
@@ -32,10 +39,6 @@ class Prompter:
             "6. Your response must contain **only** the JSON object—no additional explanations, comments, or text.\n"
             "7. Include all fields defined in the schema, even if their value is `null`.\n"
             "8. Be precise and concise in your extraction process."
-        )
-
-    def _build_user_message(self, invoice_text):
-        return (
             "### Invoice Text:\n\n"
             f"{invoice_text}\n\n"
             "### Instructions:\n"

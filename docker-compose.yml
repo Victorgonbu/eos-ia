@@ -15,7 +15,7 @@ services:
         ollama serve &
         echo 'Waiting for Ollama server...'
         sleep 6
-        ollama pull adrienbrault/nous-hermes2theta-llama3-8b:q5_K_M
+        ollama pull mistral:7b-instruct
 
         wait
       "
@@ -33,7 +33,7 @@ services:
       - vllm
     environment:
       VLLM_API_URL: http://vllm:11434
-      MODEL_NAME: adrienbrault/nous-hermes2theta-llama3-8b:q5_K_M
+      MODEL_NAME: mistral:7b-instruct
       OPENAI_API_KEY: token-what-a-day
     deploy:
       resources:

@@ -8,8 +8,10 @@ services:
     environment:
       HUGGING_FACE_HUB_TOKEN: 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
     command: >
-      --model TheBloke/Mistral-7B-v0.1-AWQ
+      --model mistralai/Mistral-7B-Instruct-v0.3
       --chat-template mistral
+      --max_model_len 15000
+      --concurrency_limit 5
       --dtype auto
       --enable-prefix-caching
       --gpu-memory-utilization 0.90
@@ -28,7 +30,7 @@ services:
       - vllm
     environment:
       VLLM_API_URL: http://vllm:8000/v1
-      MODEL_NAME: TheBloke/Mistral-7B-v0.1-AWQ
+      MODEL_NAME: mistralai/Mistral-7B-Instruct-v0.3
       OPENAI_API_KEY: token-what-a-day
     deploy:
       resources:

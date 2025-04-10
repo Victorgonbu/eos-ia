@@ -8,7 +8,7 @@ services:
     environment:
       HUGGING_FACE_HUB_TOKEN: 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
     command: >
-      --model TheBloke/Mistral-7B-v0.1-AWQ
+      --model unsloth/mistral-7b-v0.2-bnb-4bit
       --dtype auto
       --enable-prefix-caching
       --gpu-memory-utilization 0.90
@@ -27,7 +27,7 @@ services:
       - vllm
     environment:
       VLLM_API_URL: http://vllm:8000/v1
-      MODEL_NAME: TheBloke/Mistral-7B-v0.1-AWQ
+      MODEL_NAME: unsloth/mistral-7b-v0.2-bnb-4bit
       OPENAI_API_KEY: token-what-a-day
     deploy:
       resources:

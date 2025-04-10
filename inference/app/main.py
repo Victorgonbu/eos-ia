@@ -34,6 +34,7 @@ def invoice_inference(req: InvoiceRequest):
     print("OCR end")
     promter = Prompter(req.response_schema, text)
     messages = promter.messages
+    print(messages)
     
     response = client.chat(model=MODEL_NAME, messages=messages)
 

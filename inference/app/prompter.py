@@ -17,7 +17,7 @@ class Prompter:
            
     #     # )
 
-    def _build_user_message(self, invoice_text):
+    def _build_user_message(self, response_schema, invoice_text):
         if response_schema == "" or response_schema == "Stringify JSON schema":
             schema_path = os.path.join(os.path.dirname(__file__), "schemas", "response_schema.json")
             with open(schema_path, "r") as schema_file:

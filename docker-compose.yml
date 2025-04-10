@@ -9,12 +9,9 @@ services:
       HUGGING_FACE_HUB_TOKEN: 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
     command: >
       --model mistralai/Mistral-7B-Instruct-v0.3
-      --chat-template mistral
-      --max_model_len 15000
-      --concurrency_limit 5
       --dtype auto
       --enable-prefix-caching
-      --gpu-memory-utilization 0.90
+      --gpu-memory-utilization 0.85
       --port 8000
     deploy:
       resources:

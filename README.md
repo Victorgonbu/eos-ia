@@ -1,11 +1,11 @@
-# VLLM and FastAPI Project
+# VLLM and Eos-ia Project
 
 This project is a containerized application that serves a VLLM (Very Large Language Model) and includes a FastAPI application that consumes the VLLM service. 
 
 ## Project Structure
 
 ```
-vllm-fastapi-project
+eos-ia
 ├── inference
 │   ├── app
 │   │   ├── main.py          # Entry point for the FastAPI application
@@ -23,8 +23,8 @@ vllm-fastapi-project
 
 1. **Clone the repository:**
    ```
-   git clone <repository-url>
-   cd vllm-fastapi-project
+   git clone https://github.com/Victorgonbu/eos-ia.git
+   cd eos-ia
    ```
 
 2. **Build the Docker images:**

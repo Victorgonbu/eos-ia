@@ -1,6 +1,5 @@
 import json
 import os
-import unicodedata
 
 class Prompter:
     def __init__(self, response_schema, invoice_text):
@@ -20,28 +19,31 @@ class Prompter:
             response_schema = json.loads(response_schema.strip())
 
         return (
-            "You are a specialized information extraction system designed to convert raw invoice text into a structured JSON object.\n\n"
-            "Your task is to extract only the information that is **explicitly present** in the input. Do not infer or guess missing data.\n\n"
-            "**Output Requirements:**\n"
-            "1. Return **only** the extracted data as a JSON object, formatted to exactly match the schema below.\n"
-            "2. Include **all** fields defined in the schema, using `null` for missing or ambiguous values.\n"
-            "3. Dates must use the format `YYYY-MM-DD`.\n"
-            "4. Do **not** include any extra commentary, explanation, or notes—just the JSON.\n\n"
-            "**Target Schema:**\n"
-            f"{json.dumps(response_schema, indent=2)}"
+            "You are a highly advanced AI model specialized in extracting structured data from unstructured text. "
+            "Your task is to extract information from raw invoice text and return a single JSON object that strictly adheres to the provided JSON schema.\n\n"
+            "### JSON Schema:\n"
+            f"{json.dumps(response_schema, indent=2)}\n\n"
+            "### Guidelines:\n"
+            "1. Extract only the fields explicitly present in the invoice text.\n"
+            "2. If a value is missing, unclear, or not present, use `null`.\n"
+            "3. Do not infer or guess missing values under any circumstances.\n"
+            "4. Ensure the JSON output is syntactically valid and parseable.\n"
+            "5. Dates must follow the format `YYYY-MM-DD`.\n"
+            "6. Your response must contain **only** the JSON object—no additional explanations, comments, or text.\n"
+            "7. Include all fields defined in the schema, even if their value is `null`.\n"
+            "8. Be precise and concise in your extraction process."
         )
 
     def _build_user_message(self, invoice_text):
-        cleaned_text = "\n".join(line.strip() for line in invoice_text.splitlines() if line.strip())
-        cleaned_text = unicodedata.normalize("NFKC", cleaned_text)
-        
         return (
-            "Below is the raw invoice text:\n\n"
-            f"{cleaned_text}\n\n"
-            "**Extraction Instructions:**\n"
-            "1. Analyze the invoice content carefully.\n"
-            "2. Extract and return a valid JSON object according to the schema provided by the system.\n"
-            "3. All required fields must be present. Use `null` for fields not found or unclear.\n"
-            "4. Ensure proper formatting of numbers and dates (YYYY-MM-DD).\n"
-            "5. Your output must be a single, valid JSON object. **No explanations or extra text.**"
+            "### Invoice Text:\n\n"
+            f"{invoice_text}\n\n"
+            "### Instructions:\n"
+            "1. Extract the data as per the schema provided above.\n"
+            "2. Return only a valid JSON object as your output.\n"
+            "3. Include all fields defined in the schema, even if their value is `null`.\n"
+            "4. Use `null` for any field that cannot be determined from the input.\n"
+            "5. Do not include any extra text, commentary, or explanations.\n"
+            "6. Ensure all Date fields use the format `YYYY-MM-DD`.\n"
+            "7. The response must be a single valid JSON object and nothing else."
         )
